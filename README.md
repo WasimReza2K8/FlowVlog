@@ -27,8 +27,7 @@ lifecycleScope.launch {
 }
 ```
 It is not as simple as live data which is true. Although, it is the safest way to collect stateflow 
-in a lifecycle aware manner. There is blog post available from [Manual Vivo](https://medium.com/@manuelvicnt) about  
-[A safer way to collect flows from Android UIs](https://medium.com/androiddevelopers/a-safer-way-to-collect-flows-from-android-uis-23080b1f8bda)
+in a lifecycle aware manner. There is blog post available from [Manual Vivo](https://medium.com/@manuelvicnt) about [A safer way to collect flows from Android UIs](https://medium.com/androiddevelopers/a-safer-way-to-collect-flows-from-android-uis-23080b1f8bda)
 where from we see some similar example like above. From the above examples it is evident that collection
 flow/stateflow is not as simple as live data. So the concerns of those developer is justified. Having said that,
 does it makes sense to introduce a new observable (live data) just because it is more boilerplate
