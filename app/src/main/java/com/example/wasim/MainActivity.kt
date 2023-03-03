@@ -44,11 +44,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
 fun <T> Flow<T>.lifecycleAwareCollect(
     lifecycleScope: LifecycleCoroutineScope,
     lifecycleOwner: LifecycleOwner,
+    state: Lifecycle.State = Lifecycle.State.STARTED,
     collector: FlowCollector<T>,
 ) {
     val stateFlow = this
     lifecycleScope.launch {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleOwner.repeatOnLifecycle(state) {
             stateFlow.collect(collector)
         }
     }
