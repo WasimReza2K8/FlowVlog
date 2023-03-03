@@ -1,4 +1,4 @@
-# Flow Vlog
+# Lifecycle Aware Flow Collection with Zero Boilerplate
 This article is about the flow collection in a lifecycle aware manner from activity or fragment. 
 In my experience in the software industry, I have seen many developers prefers live data for state 
 management for their application because it is lifecycle aware and with just one simple method
