@@ -8,7 +8,6 @@ import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.core.ext.viewBinding
 import com.example.wasim.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -64,7 +63,7 @@ class TestActivity : AppCompatActivity() {
         ) { permissions ->
             if (permissions.entries.first().value && permissions.entries.last().value) {
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                fusedLocationClient.locationFlow().lifecycleAwareCollect(lifecycleScope, this) {
+                fusedLocationClient.locationFlow().lifecycleAwareCollect(this) {
                     Timber.e(it.toString())
                     binding.greetings.text = it.toString()
                 }

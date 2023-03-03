@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel.getState().lifecycleAwareCollect(lifecycleScope, this) {
+        viewModel.getState().lifecycleAwareCollect(this) {
             Timber.e(it)
             binding.greetings.text = it
         }
@@ -42,15 +41,16 @@ class MainViewModel @Inject constructor() : ViewModel() {
 }
 
 fun <T> Flow<T>.lifecycleAwareCollect(
-    lifecycleScope: LifecycleCoroutineScope,
     lifecycleOwner: LifecycleOwner,
     state: Lifecycle.State = Lifecycle.State.STARTED,
     collector: FlowCollector<T>,
 ) {
     val stateFlow = this
-    lifecycleScope.launch {
-        lifecycleOwner.repeatOnLifecycle(state) {
-            stateFlow.collect(collector)
+    with(lifecycleOwner) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(state) {
+                stateFlow.collect(collector)
+            }
         }
     }
 }
