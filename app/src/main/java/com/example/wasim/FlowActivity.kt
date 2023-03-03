@@ -22,9 +22,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 
 @AndroidEntryPoint
-class TestActivity : AppCompatActivity() {
+class FlowActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
+
     private val locationRequest = LocationRequest.Builder(0L)
         .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
         .setIntervalMillis(0L)
@@ -43,7 +44,7 @@ class TestActivity : AppCompatActivity() {
                 }
             }
         }
-        if (checkPermission()) {
+        if (isPermissionsGranted()) {
             requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
                 .addOnFailureListener { e ->
                     close(e) // in case of exception, close the Flow
@@ -70,7 +71,7 @@ class TestActivity : AppCompatActivity() {
             }
         }
 
-    private fun checkPermission(): Boolean {
+    private fun isPermissionsGranted(): Boolean {
         return (
             ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
