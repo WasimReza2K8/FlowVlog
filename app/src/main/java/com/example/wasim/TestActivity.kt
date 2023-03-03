@@ -3,7 +3,6 @@ package com.example.wasim
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,10 +17,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 
+@AndroidEntryPoint
 class TestActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
@@ -33,12 +34,13 @@ class TestActivity : AppCompatActivity() {
         .build()
 
     @SuppressLint("MissingPermission")
-    fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
+    fun FusedLocationProviderClient.locationFlow() = callbackFlow {
         val callback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 try {
                     result.lastLocation?.let { it1 -> trySend(it1).isSuccess }
                 } catch (e: Exception) {
+                    Timber.e(e.toString())
                 }
             }
         }
