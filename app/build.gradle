@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+apply from: "$rootDir/buildsystem/generate-module.gradle"
+
+android {
+    def androidConfig = rootProject.ext.android
+    compileSdk androidConfig.compileSdkVersion
+
+    defaultConfig {
+        applicationId androidConfig.applicationId
+        minSdk Integer.parseInt(libs.versions.android.min.sdk.get())
+        targetSdk Integer.parseInt(libs.versions.android.target.sdk .get())
+        versionCode androidConfig.buildNumber
+        versionName androidConfig.buildVersionName
+
+        testInstrumentationRunner "com.example.wasim.CustomTestRunner"
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'com.example.wasim'
+}
+
+dependencies {
+    implementation 'com.github.WasimReza2K8:core-lib:1.0.1'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraintlayout
+
+    //navigation
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+
+    //Hilt
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    // dev
+    implementation libs.com.jakewharton.timber
+    debugImplementation libs.com.squareup.leakcanary.android
+
+    // androidTest
+    androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation libs.androidx.test.espresso.contrib
+    androidTestImplementation libs.androidx.test.espresso.intents
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation  libs.androidx.test.ext.junit.ktx
+    androidTestImplementation libs.hilt.android.testing
+    kaptAndroidTest libs.hilt.compiler
+    androidTestImplementation libs.org.jetbrains.kotlinx.coroutines.test
+    androidTestImplementation libs.androidx.navigation.fragment.ktx
+    debugImplementation libs.androidx.fragment.test
+}
